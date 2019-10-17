@@ -6,8 +6,8 @@
 * Our source code will be compiled as follows: ``` gcc -Wall -Wextra -Werror -o sudoku *.c ```
 * Here’s how we’ll launch our program :
 ```
-   > ./sudoku  line0  line1  line2  line3  line4  line5  line6  line7  line8
-```
+   > ./sudoku  line0  line1  line2  line3  line4  line5  line6  line7  line8 
+   ```
    LineN represents a characters string of values ranged between ’1’ and ’9’ or ’ . ’ (for empty boxes).
 
 * Here’s an example of intended input/output for a valid sudoku.
