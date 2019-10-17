@@ -1,4 +1,4 @@
-Sudoku Project
+# Sudoku Project
 
 
 1. Create a program that resolves a sudoku.
