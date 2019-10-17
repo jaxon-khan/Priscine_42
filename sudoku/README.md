@@ -26,10 +26,6 @@
 ```
 * In case of error, display "Error" followed by a line break:
 ```
-./sudoku 0
-Error
-```
-```
 ./sudoku "......7.." 
 Error
 ```
