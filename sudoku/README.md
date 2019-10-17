@@ -5,9 +5,9 @@
 * A valid sudoku has only one possible solution.
 * Here’s how we’ll launch your program :
 ```
-   > ./rush-1  line0  line1  line2  line3  line4  line5  line6  line7  line8
+   > ./sudoku  line0  line1  line2  line3  line4  line5  line6  line7  line8
 ```
-   LineN represents a characters string of values ranged between ’1’ and ’9’ or ’.’ (for empty boxes).
+     LineN represents a characters string of values ranged between ’1’ and ’9’ or ’.’ (for empty boxes).
 
 * Here’s an example of intended input/output for a valid sudoku.
 ```
@@ -23,5 +23,6 @@
 4 7 2 1 6 8 9 3 5$ 
 >
 ```
+* In case of error, display "Error" followed by a line break.
  
  
