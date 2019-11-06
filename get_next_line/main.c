@@ -6,50 +6,48 @@
 /*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:59:10 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/11/04 17:05:18 by ekhanevi         ###   ########.fr       */
+/*   Updated: 2019/11/06 11:28:07 by ekhanevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <limits.h>
+#include <sys/uio.h>
+#include <sys/types.h>
+#include "get_next_line.h"
 
-	int				main(int ac, char *av[])
+int main(int argc, char **argv)
 {
-	char	*line;
-	int		fd;
-	int		i;
+	int fd;
+	int ret;
+	int line;
+	char *buff;
 
-	line = NULL;
-	i = 1;
-	if (ac == 1)
+	line = 0;
+	if (argc == 2)
 	{
-		fd = open(0, O_RDONLY);
-		while (get_next_line(0, &line) > 0)
+		fd = open(argv[1], O_RDONLY);
+		while ((ret = get_next_line(fd, &buff)) > 0)
 		{
-			ft_putstr(line);
-			ft_putchar('\n');
-			ft_memdel((void **)&line);
+			printf("[Return: %d] Line #%d: %s\n", ret, ++line, buff);
+			free(buff);
 		}
-		ft_memdel((void **)&line);
+		printf("[Return: %d] Line #%d: %s\n", ret, ++line, buff);
+		if (ret == -1)
+			printf("-----------\nError\n");
+		else if (ret == 0)
+			printf("-----------\nEnd of file\n");
+		close(fd);
 	}
-	else
+	if (argc == 1)
 	{
-		while (av[i])
-		{
-			fd = open(av[i], O_RDONLY);
-			while (get_next_line(fd, &line) > 0)
-			{
-				ft_putstr(line);
-				ft_putchar('\n');
-				ft_memdel((void **)&line);
-			}
-			ft_memdel((void **)&line);
-			i++;
-		}
+		while ((ret = get_next_line(0, &buff)) > 0)
+			printf("[Return: %d] Line #%d: %s\n", ret, ++line, buff);
+		if (ret == -1)
+			printf("-----------\nError\n");
+		else if (ret == 0)
+			printf("-----------\nEnd of stdin\n");
+		close(fd);
 	}
 	return (0);
 }
-
-

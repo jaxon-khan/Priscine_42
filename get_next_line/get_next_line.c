@@ -6,123 +6,170 @@
 /*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:57:30 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/11/04 16:58:30 by ekhanevi         ###   ########.fr       */
+/*   Updated: 2019/11/06 11:42:32 by ekhanevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /*
-** finds the len until next line break (or the end of string)
+** Allocates sufficient memory for a copy of the string s1, does the copy,
+** and returns a pointer to it.
 */
 
-static size_t	dist_to_linebreak_or_zerochar(char *str)
+static char			*ft_strdup(const char *s1)
 {
-	size_t	dist;
-
-	dist = 0;
-	while (str[dist] != '\n' && str[dist] != '\0')
-		dist++;
-	return (dist);
-}
-
-/*
-** copy string and add zero chars up until end of buffer size
-*/
-
-static void		str_copy_and_clean(char *dest, char *src)
-{
-	int		i;
+	char		*s2;
+	size_t		i;
 
 	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	while (i <= BUFF_SIZE)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-}
-
-/*
-** joins up until n chars from s2 into s1
-*/
-
-static char		*str_join_at_most(char **line, const char *buf, size_t n)
-{
-	char	*new_str;
-	char	*tmp;
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	tmp = *line;
-	if (!(new_str = ft_strnew(ft_strlen(tmp) + n + 1)))
+	while (s1[i])
+		i += 1;
+	if (!(s2 = (char *)malloc(sizeof(char) * (i + 1))))
 		return (NULL);
-	while (tmp[i])
-	{
-		new_str[i] = tmp[i];
-		i++;
-	}
-	while (buf[j] && n)
-	{
-		new_str[i] = buf[j];
-		i++;
-		j++;
-		n--;
-	}
-	free(tmp);
-	return (new_str);
+	i = -1;
+	while (s1[++i])
+		s2[i] = s1[i];
+	s2[i] = '\0';
+	return (s2);
 }
 
 /*
-** if that's the end of a line, stop execution
-** but also prepare the buffer to next lecture
-** also, handles the absence of a line feed
+** Allocates with malloc() and returns a “fresh” string ending with ’\0’,
+** result of the concatenation of s1 and s2. If the allocation fails the
+** function returns NULL.
 */
 
-static int		finish_line(char **line, char *buf_fd, size_t dist)
+static char			*ft_strjoin(char const *s1, char const *s2)
 {
-	if (buf_fd[dist] == '\n' || (buf_fd[0] == '\0' && *line[0]) != '\0')
-	{
-		if (buf_fd[dist] == '\n')
-			str_copy_and_clean(buf_fd, &(buf_fd[dist + 1]));
-		return (1);
-	}
-	return (0);
+	char		*s3;
+	char		*tmp_s3;
+	size_t		i;
+	size_t		j;
+
+	j = 0;
+	i = 0;
+	while (s1[i])
+		i += 1;
+	while (s2[j])
+		j += 1;
+	if (!s1 || !s2 || !(s3 = (char *)malloc(sizeof(char) * (i + j + 1))))
+		return (NULL);
+	tmp_s3 = s3;
+	while (*s1 != '\0')
+		*tmp_s3++ = *s1++;
+	while (*s2 != '\0')
+		*tmp_s3++ = *s2++;
+	*tmp_s3 = '\0';
+	return (s3);
 }
 
 /*
-** read from the file up until the end of a line
-** and save this value inside *line, so others can access it
+** Verify if whatever is in the stack, has a newline. If it doesn't, returns
+** a zero (0) to indicate that it's not valid. If there is a newline, we make a
+** copy of the stack into the line, and we copied whatever was in the stack
+** before, back to the stack (with the temporary stack that we created).
 */
 
-int				get_next_line(int const fd, char **line)
+static int			gnl_verify_line(char **stack, char **line)
 {
-	int			res;
-	size_t		dist;
-	static char	buf[OPEN_MAX][BUFF_SIZE + 1];
+	char			*tmp_stack;
+	char			*strchr_stack;
+	int				i;
 
-	if (fd < 0 || !line || fd > OPEN_MAX)
-		return (-1);
-	if (!(*line = ft_strnew(1)))
-		return (-1);
-	res = 1;
-	while (res > 0)
+	i = 0;
+	strchr_stack = *stack;
+	while (strchr_stack[i] != '\n')
+		if (!strchr_stack[i++])
+			return (0);
+	tmp_stack = &strchr_stack[i];
+	*tmp_stack = '\0';
+	*line = ft_strdup(*stack);
+	*stack = ft_strdup(tmp_stack + 1);
+	return (1);
+}
+
+/*
+** Reads into the heap, from the file descriptors, a specific number of bytes
+** defined by the BUFF_SIZE macro in the get_nex_line.h file. It's going to
+** continue the reading when the return value of the read function is greater
+** than zero (no errors, or if there is nothing else to read).
+** If there is something in the stack, we will concatinate whatever is in
+** there, with whatever is read in the heap. If no, we will just add
+** whatever is in the heap into the stack. Then we will verify the stack to
+** see if there is a newline. If there is, we will break from the while loop
+** and force the positive ret value into a one (1), using the RET_VALUE() macro.
+** This answer form SO helped me visualize the stack and heap in a better way:
+** http://stackoverflow.com/a/1213360
+*/
+
+static	int			gnl_read_file(int fd, char *heap, char **stack, char **line)
+{
+	int				ret;
+	char			*tmp_stack;
+
+	while ((ret = read(fd, heap, BUFF_SIZE)) > 0)
 	{
-		if (buf[fd][0] == '\0')
-			if ((res = read(fd, &buf[fd], BUFF_SIZE)) < 0)
-				return (res);
-		dist = dist_to_linebreak_or_zerochar(buf[fd]);
-		*line = str_join_at_most(line, buf[fd], dist);
-		if (finish_line(line, buf[fd], dist))
+		heap[ret] = '\0';
+		if (*stack)
+		{
+			tmp_stack = *stack;
+			*stack = ft_strjoin(tmp_stack, heap);
+			free(tmp_stack);
+			tmp_stack = NULL;
+		}
+		else
+			*stack = ft_strdup(heap);
+		if (gnl_verify_line(stack, line))
+			break ;
+	}
+	return (RET_VALUE(ret));
+}
+
+/*
+** This is where the real shit happens.
+** It first checks for errors (is the line is empty, if the number of the file
+** descriptor is invalid, or if it fails to allocate the heap), so it can return
+** a minus one (-1) if needed.
+**
+** If there is something in the stack (because we are using a static variable),
+** we verify that there is a newline. If not, we allocate memory for the heap,
+** and we read the file.
+**
+** When the reading of the file ends, we will free the heap (we're not gonna
+** use it anymore), and we check for the value of ret (if it's 1 or -1, return
+** that, if the stack is empty, return 0). If neither of these conditions are
+** valid, we assing line to the value of the stack, free the stack, and return 1
+**
+** A good read about file descriptors:
+** http://www.bottomupcs.com/file_descriptors.xhtml
+*/
+
+int					get_next_line(int const fd, char **line)
+{
+	static char		*stack[MAX_FD];
+	char			*heap;
+	int				ret;
+	int				i;
+
+	if (!line || (fd < 0 || fd >= MAX_FD) || (read(fd, stack[fd], 0) < 0) \
+		|| !(heap = (char *)malloc(sizeof(char) * BUFF_SIZE + 1)))
+		return (-1);
+	if (stack[fd])
+		if (gnl_verify_line(&stack[fd], line))
 			return (1);
-		ft_strclr((char *)&buf[fd]);
+	i = 0;
+	while (i < BUFF_SIZE)
+		heap[i++] = '\0';
+	ret = gnl_read_file(fd, heap, &stack[fd], line);
+	free(heap);
+	if (ret != 0 || stack[fd] == NULL || stack[fd][0] == '\0')
+	{
+		if (!ret && *line)
+			*line = NULL;
+		return (ret);
 	}
-	return (0);
+	*line = stack[fd];
+	stack[fd] = NULL;
+	return (1);
 }
-
