@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dup.c                                           :+:      :+:    :+:   */
+/*   main_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/09 16:36:39 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/10/09 16:43:37 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/11/06 13:43:56 by ekhanevi          #+#    #+#             */
+/*   Updated: 2019/11/06 13:50:15 by ekhanevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
+#include "libft/libft.h"
+#include <fcntl.h>
 
-void	*ft_dup(void const *content, size_t content_size)
+int		main(int ac, char **av)
 {
-	unsigned char	*ptr;
-	unsigned char	*ptr2;
-	void			*new;
+	int fd;
+	char *buff;
 
-	if (!(new = ft_memalloc(content_size)))
-		return (NULL);
-	ptr = (unsigned char*)content;
-	ptr2 = (unsigned char*)new;
-	while (*ptr)
-		*(ptr2++) = *(ptr++);
-	return (new);
-}
+	if (ac == 2)
+	{
+		fd = open(av[1], O_RDONLY);
+		get_next_line(fd, &buff);
+		ft_putstr(buff);
+		close(fd);
+	}
+	return (0);
+}	
