@@ -6,7 +6,7 @@
 /*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:54:25 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/11/04 12:52:29 by ekhanevi         ###   ########.fr       */
+/*   Updated: 2019/12/09 13:30:17 by ekhanevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,11 @@ t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lstaddend(t_list **alst, t_list *new);
 int				ft_atoi_base(char *str, char *base);
 char			*ft_itoa_base(int value, char *base);
+int				ft_sqrt(int nbr);
+int				ft_lst_count(t_list *lst);
+void			ft_lstadd_back(t_list **alst, t_list *new);
+int				ft_isxdigit(int c);
+int				ft_isspace(int c);
+int				ft_isblank(int c);
 
 #endif
