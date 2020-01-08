@@ -6,7 +6,7 @@
 /*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:04:21 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/11/06 13:50:05 by ekhanevi         ###   ########.fr       */
+/*   Updated: 2019/11/06 16:18:18 by ekhanevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,5 @@
 # define BUFF_SIZE 1
 
 int		get_next_line(const int fd, char **line);
-int main(int argc, char **argv);
 
 #endif

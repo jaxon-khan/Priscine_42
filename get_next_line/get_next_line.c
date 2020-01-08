@@ -6,15 +6,11 @@
 /*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:00:44 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/11/06 15:53:07 by ekhanevi         ###   ########.fr       */
+/*   Updated: 2019/11/06 16:17:35 by ekhanevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*
-** finds the len until next line break (or the end of string)
-*/
 
 static size_t	dist_to_linebreak_or_zerochar(char *str)
 {
@@ -25,10 +21,6 @@ static size_t	dist_to_linebreak_or_zerochar(char *str)
 		dist++;
 	return (dist);
 }
-
-/*
-** copy string and add zero chars up until end of buffer size
-*/
 
 static void		str_copy_and_clean(char *dest, char *src)
 {
@@ -46,10 +38,6 @@ static void		str_copy_and_clean(char *dest, char *src)
 		i++;
 	}
 }
-
-/*
-** joins up until n chars from s2 into s1
-*/
 
 static char		*str_join_at_most(char **line, const char *buf, size_t n)
 {
@@ -79,12 +67,6 @@ static char		*str_join_at_most(char **line, const char *buf, size_t n)
 	return (new_str);
 }
 
-/*
-** if that's the end of a line, stop execution
-** but also prepare the buffer to next lecture
-** also, handles the absence of a line feed
-*/
-
 static int		finish_line(char **line, char *buf_fd, size_t dist)
 {
 	if (buf_fd[dist] == '\n' || (buf_fd[0] == '\0' && *line[0]) != '\0')
@@ -95,11 +77,6 @@ static int		finish_line(char **line, char *buf_fd, size_t dist)
 	}
 	return (0);
 }
-
-/*
-** read from the file up until the end of a line
-** and save this value inside *line, so others can access it
-*/
 
 int				get_next_line(int const fd, char **line)
 {
