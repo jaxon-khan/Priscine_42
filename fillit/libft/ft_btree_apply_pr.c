@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_btree_apply_pr.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/09 12:36:32 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/12/09 12:38:40 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/09/26 16:38:03 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/26 16:38:04 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isspace(int c)
+#include "libft.h"
+
+void	ft_btree_apply_pr(t_btree *root, void (*f)(void *))
 {
-	if (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ')
-		return (1);
-	return (0);
+	if (root)
+	{
+		f(root->item);
+		ft_btree_apply_pr(root->left, f);
+		ft_btree_apply_pr(root->right, f);
+	}
 }

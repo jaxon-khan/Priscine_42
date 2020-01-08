@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 13:08:46 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/10/16 13:09:02 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/09/21 14:43:37 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/25 22:12:20 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strncat(char *dest, const char *src, size_t nb)
+char	*ft_strncat(char *s1, const char *s2, size_t n)
 {
-	int		i;
-	size_t	j;
+	size_t	l[2];
 
-	i = 0;
-	while (dest[i] != '\0')
-		i++;
-	j = 0;
-	while (src[j] != '\0' && j < nb)
+	l[0] = ft_strlen(s1);
+	l[1] = ft_strlen(s2);
+	if (ft_strlen(s2) < n)
 	{
-		dest[i] = src[j];
-		i++;
-		j++;
+		ft_strncpy(s1 + l[0], s2, l[1]);
+		s1[l[0] + l[1]] = '\0';
 	}
-	dest[i] = '\0';
-	return (dest);
+	else
+	{
+		ft_strncpy(s1 + l[0], s2, n);
+		s1[l[0] + n] = '\0';
+	}
+	return (s1);
 }

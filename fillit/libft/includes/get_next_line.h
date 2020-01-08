@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/20 20:55:06 by yorazaye          #+#    #+#             */
-/*   Updated: 2019/09/26 13:07:05 by yorazaye         ###   ########.fr       */
+/*   Created: 2019/09/27 07:37:54 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/10/24 14:54:50 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GET_NEXT_LINE_H
 
-void	ft_putnbr(int n)
-{
-	if (n == -2147483648)
-		ft_putstr("-2147483648");
-	else
-	{
-		if (n >= -2147483648 && n < 0)
-		{
-			ft_putchar('-');
-			n *= -1;
-		}
-		if (n > 9)
-			ft_putnbr(n / 10);
-		ft_putchar((n % 10) + '0');
-	}
-}
+# define GET_NEXT_LINE_H
+
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+
+int		get_next_line(const int fd, char **line);
+
+# define BUFF_SIZE 32
+# define FD_SIZE 256
+
+#endif

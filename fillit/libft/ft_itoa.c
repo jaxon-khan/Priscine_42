@@ -3,52 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 12:07:45 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/10/16 12:08:00 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/09/20 18:07:17 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/23 16:44:35 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
-static int		get_nb_size(unsigned int nb)
+static size_t	ft_intlen(int n)
 {
-	unsigned int	size;
+	size_t	l;
 
-	size = 0;
-	while (nb >= 10)
+	if (n < 0)
 	{
-		nb /= 10;
-		++size;
+		n *= -1;
+		l = 1;
 	}
-	return (size + 1);
+	else
+		l = 0;
+	if (n == 0)
+		return (1);
+	while (n != 0)
+	{
+		n = n / 10;
+		l++;
+	}
+	return (l);
 }
 
-char			*ft_itoa(int nbr)
+static	char	*ft_dealwithit(int n, int l, char *r)
 {
-	char			*str;
-	unsigned int	nb;
-	unsigned int	index;
-	unsigned int	size;
-
-	if (nbr < 0)
-		nb = (unsigned int)(nbr * -1);
-	else
-		nb = (unsigned int)nbr;
-	size = (unsigned int)get_nb_size(nb);
-	index = 0;
-	if (!(str = (char*)malloc(sizeof(char) * (size + 1 + (nbr < 0 ? 1 : 0)))))
-		return (0);
-	if (nbr < 0 && (str[index] = '-'))
-		size++;
-	index = size - 1;
-	while (nb >= 10)
+	while (l >= 0)
 	{
-		str[index--] = (char)(nb % 10 + 48);
-		nb /= 10;
+		r[l--] = n % 10 + '0';
+		n /= 10;
+		if (n == 0)
+			break ;
 	}
-	str[index] = (char)(nb % 10 + 48);
-	str[size] = '\0';
-	return (str);
+	return (r);
+}
+
+char			*ft_itoa(int n)
+{
+	char	*r;
+	int		l;
+
+	l = ft_intlen(n);
+	r = ft_strnew(l);
+	if (!(r = ft_strnew(l)))
+		return (NULL);
+	if (n == -2147483648)
+	{
+		r[0] = '-';
+		r[1] = '2';
+		n = 147483648;
+	}
+	else if (n < 0 && n != -2147483648)
+	{
+		r[0] = '-';
+		n *= -1;
+	}
+	r[l--] = '\0';
+	r = ft_dealwithit(n, l, r);
+	return (r);
 }

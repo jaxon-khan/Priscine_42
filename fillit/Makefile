@@ -3,40 +3,40 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/12/18 15:02:01 by ekhanevi          #+#    #+#              #
-#    Updated: 2019/12/18 15:16:12 by ekhanevi         ###   ########.fr        #
+#    Created: 2019/10/19 20:02:52 by yorazaye          #+#    #+#              #
+#    Updated: 2019/10/22 18:28:04 by yorazaye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fillit
 
-SRC = main.c matrices.c solver.c grid.c read_input.c tetro_checker.c
+F = ft_backtrack ft_tetris tetris_manipulation additional ft_checks fillit leakage_deal
 
-OBJ = $(SRC:.c=.o)
+F_C = $(addsuffix .c, $(F))
 
-LIBFT = libft/libft.a
+F_O = $(addsuffix .o, $(F))
 
-HEADER = -c -I lib_fillit.h
+I1 = libft/includes
+
+I2 = fillit.h
 
 all: $(NAME)
 
-$(OBJ): %.o: %.c
-		@gcc -c -Wall -Werror -Wextra -I libft/ $< -o $@
+$(NAME):
+	make -C libft/
+	gcc -o $(NAME) $(F_C) -I $(I2) -I $(I1) -L libft -lft
 
-$(LIBFT):
-	@make -C ./libft
-
-$(NAME): $(LIBFT) $(OBJ)
-	@gcc $(OBJ) $(LIBFT) -o $(NAME)
+debug:
+	gcc -o $(NAME) $(F_C) -I $(I2) -I $(I1) -L libft -lft -g
 
 clean:
-	make -C ./libft clean
-	rm -rf $(OBJ)
+	rm -f libft/*.o
+	rm -f $(F_O)
 
 fclean: clean
-	make -C ./libft fclean
+	rm -f libft/libft.a
 	rm -rf $(NAME)
 
 re: fclean all

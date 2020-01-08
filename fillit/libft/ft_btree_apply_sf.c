@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isblank.c                                       :+:      :+:    :+:   */
+/*   ft_btree_apply_sf.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/09 11:53:05 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/12/09 11:53:28 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/09/26 16:45:59 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/26 16:47:36 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isblank(int c)
+#include "libft.h"
+
+void	ft_btree_apply_sf(t_btree *root, void (*f)(void *))
 {
-	if (c == '\t' || c == ' ')
-		return (1);
-	return (0);
+	if (root->left)
+		ft_btree_apply_sf(root->left, f);
+	if (root->right)
+		ft_btree_apply_sf(root->right, f);
+	if (root)
+		f(root->item);
 }

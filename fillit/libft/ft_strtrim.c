@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 13:24:15 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/10/16 13:24:27 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/09/20 12:12:44 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/24 19:03:26 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,24 @@
 
 char	*ft_strtrim(char const *s)
 {
-	char			*result;
-	unsigned int	start;
-	unsigned int	size;
-	unsigned int	spaces_count;
+	size_t	i;
+	char	*r;
+	size_t	l;
 
 	if (!s)
 		return (NULL);
-	size = (unsigned int)ft_strlen((char*)s);
-	spaces_count = ft_strcntfirstchar((char*)s, " \n\t");
-	start = spaces_count;
-	if (size > spaces_count)
-		spaces_count += ft_strcntlastchar((char*)s, " \n\t");
-	size -= spaces_count;
-	if (!(result = ft_memalloc((size_t)size + 1)))
+	i = 0;
+	while ((s[i] == ' ' || s[i] == '\n' || s[i] == '\t') && s[i] != '\0')
+		i++;
+	l = ft_strlen(s);
+	l--;
+	while ((s[l] == ' ' || s[l] == '\n' || s[l] == '\t') && l > i)
+		l--;
+	if (l == i)
+		return (ft_strnew(1));
+	r = ft_strnew(++l - i);
+	if (!r)
 		return (NULL);
-	result = ft_strncpy(result, (char*)s + start, size);
-	return (result);
+	r = ft_strsub(s, i, l - i);
+	return (r);
 }

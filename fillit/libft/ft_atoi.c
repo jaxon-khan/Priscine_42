@@ -3,35 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 14:06:28 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/10/16 17:28:49 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/08/12 11:35:23 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/27 14:01:52 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_atoi(const char *str)
+int		ft_atoi(char *s)
 {
-	unsigned long long	nmbr;
-	char				check;
+	long	prv;
+	long	n;
+	int		sign;
 
-	nmbr = 0;
-	while ((*str < 14 && *str > 8) || *str == 32)
-		str++;
-	check = '+';
-	if (*str == '-' || *str == '+')
+	n = 0;
+	while ((*s >= 9 && *s <= 13) || (*s == 32))
+		s++;
+	sign = 1;
+	if (*s == '-')
+		sign = -1;
+	if (*s == '+' || *s == '-')
+		s++;
+	while (*s >= '0' && *s <= '9')
 	{
-		check = *str;
-		str++;
+		prv = n;
+		n = n * 10 + (*s++ - '0');
+		if (prv > n)
+		{
+			if (sign == 1)
+				return (-1);
+			return (0);
+		}
 	}
-	while ((*str >= '0') && (*str <= '9'))
-	{
-		nmbr = nmbr * 10 + (*str - '0');
-		str++;
-	}
-	if (nmbr > 9223372036854775807)
-		return (check == '-' ? 0 : -1);
-	return (check == '-' ? -nmbr : nmbr);
+	return ((int)(n * sign));
 }

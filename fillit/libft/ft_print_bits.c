@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lst_count.c                                     :+:      :+:    :+:   */
+/*   ft_print_bits.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhanevi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yorazaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/09 12:45:56 by ekhanevi          #+#    #+#             */
-/*   Updated: 2019/12/09 12:46:08 by ekhanevi         ###   ########.fr       */
+/*   Created: 2019/09/26 16:51:39 by yorazaye          #+#    #+#             */
+/*   Updated: 2019/09/26 16:57:32 by yorazaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lst_count(t_list *lst)
+void	ft_print_bits(unsigned char octet)
 {
-	int	len;
+	int		bits;
 
-	len = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		len++;
-	}
-	return (len);
+	if (!octet)
+		return ;
+	bits = 256;
+	while (bits >>= 1)
+		(bits & octet) ? (ft_putchar('1')) : (ft_putchar('1'));
 }
