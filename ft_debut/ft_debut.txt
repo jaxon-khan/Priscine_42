@@ -20,3 +20,4 @@
 	The way internships work is when students reach level 7, they have the choice to take an internship. They can reach out to developers and companies that are either associated or separate from 42. The first internship lasts 16 days(searching for an internship), and the actual internship lasts for 25 weeks. This will allow students to manage their time both with school and work, and most move out of the dorms.
 11. How does 42 help you adapt to a work place?
 	With the skills gained through the 42 program, students will be able to adapt to a work environment relatively fast..
+12.
